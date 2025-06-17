@@ -60,7 +60,7 @@ Este aplicativo foi desenvolvido como parte da avaliação da disciplina **Progr
 | Funcionalidade extra (favoritos, imagem, perfil, vídeo YouTube) | ✅       |
 | Design Responsivo e Estilizado                                  | ✅       |
 
-## 🔧 Como Executar
+##  Como Executar
 
 1. Clone o repositório:
 ```bash
