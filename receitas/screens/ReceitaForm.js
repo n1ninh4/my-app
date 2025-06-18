@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import { Button, Card } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaskedTextInput } from 'react-native-mask-text';
 
 export default function ReceitaForm({ navigation, route }) {
   const receitaEdit = route.params?.receita;
@@ -24,6 +25,7 @@ export default function ReceitaForm({ navigation, route }) {
   const [ingredientes, setIngredientes] = useState('');
   const [modoPreparo, setModoPreparo] = useState('');
   const [tempoPreparo, setTempoPreparo] = useState('');
+  const [quantidade, setQuantidade] = useState('');
   const [observacoes, setObservacoes] = useState('');
   const [imagem, setImagem] = useState(null);
 
@@ -33,6 +35,7 @@ export default function ReceitaForm({ navigation, route }) {
       setIngredientes(receitaEdit.ingredientes);
       setModoPreparo(receitaEdit.modoPreparo);
       setTempoPreparo(receitaEdit.tempoPreparo);
+      setQuantidade(receitaEdit.quantidade || '');
       setObservacoes(receitaEdit.observacoes);
       setImagem(receitaEdit.imagem);
     }
@@ -51,7 +54,7 @@ export default function ReceitaForm({ navigation, route }) {
   };
 
   const salvarReceita = async () => {
-    if (!titulo || !ingredientes || !modoPreparo || !tempoPreparo) {
+    if (!titulo || !ingredientes || !modoPreparo || !tempoPreparo || !quantidade) {
       Alert.alert('Por favor, preencha todos os campos obrigatórios.');
       return;
     }
@@ -61,6 +64,7 @@ export default function ReceitaForm({ navigation, route }) {
       ingredientes,
       modoPreparo,
       tempoPreparo,
+      quantidade,
       observacoes,
       imagem,
     };
@@ -133,14 +137,28 @@ export default function ReceitaForm({ navigation, route }) {
         />
 
         <Text style={styles.label}>Tempo de Preparo:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Ex: 30 minutos"
-          value={tempoPreparo}
-          onChangeText={setTempoPreparo}
-          placeholderTextColor="#aaa"
-          returnKeyType="done"
-        />
+        <View style={styles.inputMask}>
+          <MaskedTextInput
+            mask="99:99"
+            value={tempoPreparo}
+            onChangeText={setTempoPreparo}
+            keyboardType="numeric"
+            placeholder="Ex: 01:30"
+            style={styles.maskedInput}
+          />
+        </View>
+
+        <Text style={styles.label}>Quantidade:</Text>
+        <View style={styles.inputMask}>
+          <MaskedTextInput
+            mask="999 unidades"
+            value={quantidade}
+            onChangeText={setQuantidade}
+            keyboardType="numeric"
+            placeholder="Ex: 100 unidades"
+            style={styles.maskedInput}
+          />
+        </View>
 
         <Text style={styles.label}>Outras Observações (opcional):</Text>
         <TextInput
@@ -220,5 +238,18 @@ const styles = StyleSheet.create({
     marginTop: 30,
     paddingVertical: 8,
     borderRadius: 8,
+  },
+  inputMask: {
+    borderWidth: 1,
+    borderColor: '#E65100',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 14,
+    marginTop: 8,
+    marginBottom: 12,
+  },
+  maskedInput: {
+    fontSize: 18,
+    color: '#333',
   },
 });

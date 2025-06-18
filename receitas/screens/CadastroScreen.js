@@ -5,16 +5,18 @@ import {
   Platform,
   ScrollView,
   Image,
+  View,
 } from 'react-native';
 import { TextInput, Button, Text } from 'react-native-paper';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MaskedTextInput } from 'react-native-mask-text';
 
 const schema = Yup.object().shape({
   nome: Yup.string().min(3, 'Nome muito curto').required('Nome é obrigatório'),
   email: Yup.string().email('Email inválido').required('Email obrigatório'),
-  telefone: Yup.string().min(10, 'Telefone incompleto').required('Telefone obrigatório'),
+  telefone: Yup.string().min(14, 'Telefone incompleto').required('Telefone obrigatório'),
   senha: Yup.string().min(6, 'Mínimo 6 caracteres').required('Senha obrigatória'),
   confirmarSenha: Yup.string()
     .oneOf([Yup.ref('senha')], 'As senhas não coincidem')
@@ -86,10 +88,17 @@ const CadastroScreen = ({ navigation }) => {
                 label="Telefone"
                 mode="outlined"
                 left={<TextInput.Icon icon="phone" />}
+                render={(props) => (
+                  <MaskedTextInput
+                    {...props}
+                    mask="(99) 99999-9999"
+                    keyboardType="phone-pad"
+                    placeholder="(00) 00000-0000"
+                  />
+                )}
                 value={values.telefone}
                 onChangeText={handleChange('telefone')}
                 onBlur={handleBlur('telefone')}
-                keyboardType="phone-pad"
                 style={styles.input}
               />
               {touched.telefone && errors.telefone && <Text style={styles.error}>{errors.telefone}</Text>}
