@@ -25,7 +25,6 @@ export default function ReceitaForm({ navigation, route }) {
   const [ingredientes, setIngredientes] = useState('');
   const [modoPreparo, setModoPreparo] = useState('');
   const [tempoPreparo, setTempoPreparo] = useState('');
-  const [quantidade, setQuantidade] = useState('');
   const [observacoes, setObservacoes] = useState('');
   const [imagem, setImagem] = useState(null);
 
@@ -35,7 +34,6 @@ export default function ReceitaForm({ navigation, route }) {
       setIngredientes(receitaEdit.ingredientes);
       setModoPreparo(receitaEdit.modoPreparo);
       setTempoPreparo(receitaEdit.tempoPreparo);
-      setQuantidade(receitaEdit.quantidade || '');
       setObservacoes(receitaEdit.observacoes);
       setImagem(receitaEdit.imagem);
     }
@@ -54,7 +52,7 @@ export default function ReceitaForm({ navigation, route }) {
   };
 
   const salvarReceita = async () => {
-    if (!titulo || !ingredientes || !modoPreparo || !tempoPreparo || !quantidade) {
+    if (!titulo || !ingredientes || !modoPreparo || !tempoPreparo) {
       Alert.alert('Por favor, preencha todos os campos obrigatórios.');
       return;
     }
@@ -64,7 +62,6 @@ export default function ReceitaForm({ navigation, route }) {
       ingredientes,
       modoPreparo,
       tempoPreparo,
-      quantidade,
       observacoes,
       imagem,
     };
@@ -117,7 +114,7 @@ export default function ReceitaForm({ navigation, route }) {
         <Text style={styles.label}>Ingredientes:</Text>
         <TextInput
           style={[styles.input, styles.multiline]}
-          placeholder="Liste os ingredientes, um por linha"
+          placeholder="Ex: 2 ovos\n1 colher de fermento"
           value={ingredientes}
           onChangeText={setIngredientes}
           multiline
@@ -144,18 +141,6 @@ export default function ReceitaForm({ navigation, route }) {
             onChangeText={setTempoPreparo}
             keyboardType="numeric"
             placeholder="Ex: 01:30"
-            style={styles.maskedInput}
-          />
-        </View>
-
-        <Text style={styles.label}>Quantidade:</Text>
-        <View style={styles.inputMask}>
-          <MaskedTextInput
-            mask="999 unidades"
-            value={quantidade}
-            onChangeText={setQuantidade}
-            keyboardType="numeric"
-            placeholder="Ex: 100 unidades"
             style={styles.maskedInput}
           />
         </View>
